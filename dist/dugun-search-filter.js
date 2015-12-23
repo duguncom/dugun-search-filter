@@ -1,0 +1,105 @@
+angular.module('dugun.search', []);
+
+function DgSearch($filter) {
+    var filterFilter = $filter('filter');
+    var standardComparator = function standardComparator(obj, text) {
+        text = ('' + text).toLowerCase();
+        return ('' + obj).toLowerCase().indexOf(text) > -1;
+    };
+
+    return function customFilter(array, expression) {
+        function customComparator(actual, expected) {
+            var isBeforeActivated = expected.endDate;
+            var isAfterActivated = expected.startDate;
+            var isLower = expected.lower;
+            var isHigher = expected.higher;
+            var higherLimit;
+            var lowerLimit;
+            var itemDate;
+            var queryDate;
+
+
+            if(angular.isObject(expected)) {
+                //date range
+                if (expected.startDate || expected.endDate) {
+                    try {
+                        if(isBeforeActivated) {
+                            higherLimit = expected.endDate;
+
+                            itemDate = new Date(actual);
+                            queryDate = new Date(higherLimit.toString());
+
+                            window.itemDate = itemDate;
+                            window.higherLimit = queryDate;
+
+                            if(itemDate > queryDate) {
+                                return false;
+                            }
+                        }
+
+                        if(isAfterActivated) {
+                            lowerLimit = expected.startDate;
+
+                            itemDate = new Date(actual);
+                            queryDate = new Date(lowerLimit.toString());
+
+                            window.itemDate = itemDate;
+                            window.lowerLimit = queryDate;
+
+                            if (itemDate < queryDate) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                } else if(isLower || isHigher) {
+                    //number range
+                    if (isLower) {
+                        higherLimit = expected.lower;
+
+                        if (actual > higherLimit) {
+                            return false;
+                        }
+                    }
+
+                    if (isHigher) {
+                        lowerLimit = expected.higher;
+                        if (actual < lowerLimit) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                } else if(angular.isArray(expected)) {
+                    if(expected.length === 0) {
+                        return true;
+                    } else if(!angular.isArray(actual)) {
+                        return expected.indexOf(actual) > -1;
+                    } else {
+                        return angular.equals(actual, expected);
+                    }
+                }
+                //etc
+                return true;
+            }
+
+            if(typeof actual !== 'undefined') {
+                return standardComparator(actual, expected);
+            } else {
+                return true;
+            }
+        }
+
+        var output = filterFilter(array, expression, customComparator);
+        return output;
+    };
+}
+
+DgSearch.$inject = [
+    '$filter'
+];
+
+angular.module('dugun.search').filter('dgSearch', DgSearch);

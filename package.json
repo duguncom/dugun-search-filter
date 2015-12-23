@@ -1,0 +1,16 @@
+{
+    "name": "dugun-search-filter",
+    "description": "Simple filter that can search in nested objects, date ranges, number ranges.",
+    "authors": [
+        "Ege Sertçetin"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/duguncom/dugun-search-filter.git"
+    },
+    "homepage": "https://github.com/duguncom/dugun-search-filter",
+    "dependencies": {
+        "gulp": "^3.9.0",
+        "gulp-concat": "^2.3.3"
+    }
+}
