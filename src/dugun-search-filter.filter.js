@@ -84,10 +84,12 @@ function DgSearch($filter) {
                 return true;
             }
 
-            if(typeof actual !== 'undefined') {
+            if(expected === 'exists') {
+                return !!actual;
+            } else if(typeof actual !== 'undefined') {
                 return standardComparator(actual, expected);
             } else {
-                return false;
+                return true;
             }
         }
 
