@@ -89,7 +89,7 @@ function DgSearch($filter) {
             } else if(typeof actual !== 'undefined') {
                 return standardComparator(actual, expected);
             } else {
-                return true;
+                return false;
             }
         }
 
