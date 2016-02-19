@@ -1,6 +1,6 @@
 {
   "name": "dugun-search-filter",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Simple filter that can search in nested objects, date ranges, number ranges.",
   "authors": [
     "Ege Sertçetin"
