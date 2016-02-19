@@ -103,3 +103,9 @@ function DgSearch($filter) {
         return output;
     };
 }
+
+DgSearch.$inject = [
+    '$filter'
+];
+
+angular.module('dugun.search').filter('dgSearch', DgSearch);
