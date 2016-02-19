@@ -2,12 +2,13 @@ angular.module('dugun.search', []);
 
 function DgSearch($filter) {
     var filterFilter = $filter('filter');
+    var orderByFilter = $filter('orderBy');
     var standardComparator = function standardComparator(obj, text) {
         text = ('' + text).toLowerCase();
         return ('' + obj).toLowerCase().indexOf(text) > -1;
     };
 
-    return function customFilter(array, expression) {
+    return function customFilter(array, expression, orderByKey, orderByDirection) {
         function customComparator(actual, expected) {
             var isBeforeActivated = expected.endDate;
             var isAfterActivated = expected.startDate;
@@ -96,12 +97,9 @@ function DgSearch($filter) {
         }
 
         var output = filterFilter(array, expression, customComparator);
+        if(orderByKey) {
+            output = orderByFilter(output, orderByKey, !!orderByDirection);
+        }
         return output;
     };
 }
-
-DgSearch.$inject = [
-    '$filter'
-];
-
-angular.module('dugun.search').filter('dgSearch', DgSearch);
