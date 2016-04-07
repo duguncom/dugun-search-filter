@@ -10,8 +10,8 @@ function DgSearch($filter) {
         function customComparator(actual, expected) {
             var isBeforeActivated = expected ? expected.endDate : null;
             var isAfterActivated = expected ? expected.startDate : null;
-            var isLower = expected.lower;
-            var isHigher = expected.higher;
+            var isLower = expected ? expected.lower : null;
+            var isHigher = expected ? expected.higher : null;
             var higherLimit;
             var lowerLimit;
             var itemDate;
